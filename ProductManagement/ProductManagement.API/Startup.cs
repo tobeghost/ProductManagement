@@ -39,6 +39,9 @@ namespace ProductManagement.API
             //Implement application database context.
             services.AddDbContext<PMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PMDbConnection")));
 
+            //Implement all database table repositories.
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
             //Implement services.
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
