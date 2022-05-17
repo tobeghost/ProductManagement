@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PM.Domain.Customers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,13 +21,18 @@ namespace PM.Domain.Directory
         public string TwoLetterIsoCode { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the entity is status
+        /// Gets or sets a value indicating whether the entity is active
         /// </summary>
-        public bool Status { get; set; }
+        public bool Active { get; set; }
 
         /// <summary>
         /// Gets or sets the state provinces for a country
         /// </summary>
         public virtual ICollection<StateProvince> StateProvinces { get; set; }
+
+        /// <summary>
+        /// Gets or sets the state provinces for a customer address
+        /// </summary>
+        public virtual ICollection<CustomerAddress> CustomerAddress { get; set; }
     }
 }

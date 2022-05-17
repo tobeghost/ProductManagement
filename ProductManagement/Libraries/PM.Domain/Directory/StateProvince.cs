@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PM.Domain.Customers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,18 +16,23 @@ namespace PM.Domain.Directory
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the related country id
+        /// Gets or sets the country identifier
         /// </summary>
         public int CountryId { get; set; }
 
         /// <summary>
-        /// Gets or sets the related country entity
+        /// Gets or sets the country entity
         /// </summary>
         public virtual Country Country { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the entity is status
+        /// Gets or sets a value indicating whether the entity is active
         /// </summary>
-        public bool Status { get; set; }
+        public bool Active { get; set; }
+
+        /// <summary>
+        /// Gets or sets the state provinces for a customer address
+        /// </summary>
+        public virtual ICollection<CustomerAddress> CustomerAddress { get; set; }
     }
 }

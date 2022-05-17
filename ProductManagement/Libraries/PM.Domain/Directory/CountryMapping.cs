@@ -18,7 +18,7 @@ namespace PM.Domain.Mapping
             Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(t => t.Name).IsRequired();
             Property(t => t.TwoLetterIsoCode).IsRequired();
-            Property(t => t.Status).IsRequired();
+            Property(t => t.Active).IsRequired();
 
             //Table  
             ToTable("Countries");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PM.Domain.Catalog;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -30,8 +31,13 @@ namespace PM.Domain.Directory
         public int NumberDecimal { get; set; } = 2;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the entity is status
+        /// Gets or sets a value indicating whether the entity is active
         /// </summary>
-        public bool Status { get; set; }
+        public bool Active { get; set; }
+
+        /// <summary>
+        /// Gets or sets the categories for a product
+        /// </summary>
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

@@ -9,5 +9,24 @@ namespace PM.Domain.Catalog
     /// </summary>
     public partial class ProductCategory : BaseEntity
     {
+        /// <summary>
+        /// Gets or sets the product identifier
+        /// </summary>
+        public int ProductId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the category identifier
+        /// </summary>
+        public int CategoryId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the category entity
+        /// </summary>
+        public virtual Category Category { get; set; }
+
+        /// <summary>
+        /// Gets or sets the product entity
+        /// </summary>
+        public virtual Product Product { get; set; }
     }
 }

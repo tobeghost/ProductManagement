@@ -5,25 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using System.Text;
 
-namespace PM.Domain.Directory
+namespace PM.Domain.Customers
 {
-    public class CurrencyMapping : EntityTypeConfiguration<Currency>
+    public class CustomerMapping : EntityTypeConfiguration<Customer>
     {
-        public CurrencyMapping()
+        public CustomerMapping()
         {
             //Key
             HasKey(t => t.Id);
 
             //Properties  
             Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.Name).IsRequired();
-            Property(t => t.CurrencyCode).IsRequired();
-            Property(t => t.Rate).IsRequired();
-            Property(t => t.NumberDecimal).IsRequired();
+            Property(t => t.FirstName).IsRequired();
+            Property(t => t.LastName).IsRequired();
+            Property(t => t.Username).IsRequired();
+            Property(t => t.Password).IsRequired();
+            Property(t => t.IsAdministrator).IsRequired();
             Property(t => t.Active).IsRequired();
 
             //Table  
-            ToTable("Currencies");
+            ToTable("Customers");
         }
     }
 }
