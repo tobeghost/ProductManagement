@@ -1,30 +1,30 @@
-﻿using PM.Domain.Directory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PM.Domain.Catalog
 {
-    public class ProductCategoryMapping : EntityTypeConfiguration<ProductCategory>
+    public class ProductCategoryMapping : IEntityTypeConfiguration<ProductCategory>
     {
         public ProductCategoryMapping()
         {
+        }
+
+        public void Configure(EntityTypeBuilder<ProductCategory> builder)
+        {
             //Key
-            HasKey(t => t.Id);
+            builder.HasKey(t => t.Id);
 
             //Properties  
-            Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.ProductId).IsRequired();
-            Property(t => t.CategoryId).IsRequired();
+            builder.Property(t => t.Id).UseIdentityColumn();
+            builder.Property(t => t.ProductId).IsRequired();
+            builder.Property(t => t.CategoryId).IsRequired();
 
             //Table  
-            ToTable("ProductCategories");
+            builder.ToTable("ProductCategories");
 
             //Relationship
-            HasRequired(t => t.Category).WithMany(c => c.Products).HasForeignKey(t => t.CategoryId).WillCascadeOnDelete(false);
-            HasRequired(t => t.Product).WithMany(c => c.ProductCategories).HasForeignKey(t => t.ProductId).WillCascadeOnDelete(false);
+            builder.HasOne(t => t.Category).WithMany(c => c.Products).HasForeignKey(t => t.CategoryId);
+            builder.HasOne(t => t.Product).WithMany(c => c.ProductCategories).HasForeignKey(t => t.ProductId);
         }
     }
 }

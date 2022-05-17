@@ -1,27 +1,27 @@
-﻿using PM.Domain.Directory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PM.Domain.Catalog
 {
-    public class CategoryMapping : EntityTypeConfiguration<Category>
+    public class CategoryMapping : IEntityTypeConfiguration<Category>
     {
         public CategoryMapping()
         {
+        }
+
+        public void Configure(EntityTypeBuilder<Category> builder)
+        {
             //Key
-            HasKey(t => t.Id);
+            builder.HasKey(t => t.Id);
 
             //Properties  
-            Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.ParentCategoryId).IsRequired();
-            Property(t => t.Name).IsRequired();
-            Property(t => t.Active).IsRequired();
+            builder.Property(t => t.Id).UseIdentityColumn();
+            builder.Property(t => t.ParentCategoryId).IsRequired();
+            builder.Property(t => t.Name).IsRequired();
+            builder.Property(t => t.Active).IsRequired();
 
             //Table  
-            ToTable("Categories");
+            builder.ToTable("Categories");
         }
     }
 }

@@ -1,27 +1,27 @@
-﻿using PM.Domain.Directory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace PM.Domain.Mapping
+namespace PM.Domain.Directory
 {
-    public class CountryMapping : EntityTypeConfiguration<Country>
+    public class CountryMapping : IEntityTypeConfiguration<Country>
     {
         public CountryMapping()
         {
+        }
+
+        public void Configure(EntityTypeBuilder<Country> builder)
+        {
             //Key
-            HasKey(t => t.Id);
+            builder.HasKey(t => t.Id);
 
             //Properties  
-            Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.Name).IsRequired();
-            Property(t => t.TwoLetterIsoCode).IsRequired();
-            Property(t => t.Active).IsRequired();
+            builder.Property(t => t.Id).UseIdentityColumn();
+            builder.Property(t => t.Name).IsRequired();
+            builder.Property(t => t.TwoLetterIsoCode).IsRequired();
+            builder.Property(t => t.Active).IsRequired();
 
             //Table  
-            ToTable("Countries");
+            builder.ToTable("Countries");
         }
     }
 }

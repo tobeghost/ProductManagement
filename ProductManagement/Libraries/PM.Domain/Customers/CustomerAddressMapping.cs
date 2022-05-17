@@ -1,40 +1,41 @@
-﻿using PM.Domain.Directory;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Text;
 
 namespace PM.Domain.Customers
 {
-    public class CustomerAddressMapping : EntityTypeConfiguration<CustomerAddress>
+    public class CustomerAddressMapping : IEntityTypeConfiguration<CustomerAddress>
     {
         public CustomerAddressMapping()
         {
+        }
+
+        public void Configure(EntityTypeBuilder<CustomerAddress> builder)
+        {
             //Key
-            HasKey(t => t.Id);
+            builder.HasKey(t => t.Id);
 
             //Properties  
-            Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.CustomerId).IsRequired();
-            Property(t => t.FirstName).IsRequired();
-            Property(t => t.LastName).IsRequired();
-            Property(t => t.Email).IsRequired();
-            Property(t => t.CountryId).IsRequired();
-            Property(t => t.StateProvinceId).IsRequired();
-            Property(t => t.City).IsRequired();
-            Property(t => t.Address).IsRequired();
-            Property(t => t.ZipPostalCode).IsRequired();
-            Property(t => t.PhoneNumber).IsRequired();
-            Property(t => t.Active).IsRequired();
+            builder.Property(t => t.Id).UseIdentityColumn();
+            builder.Property(t => t.CustomerId).IsRequired();
+            builder.Property(t => t.FirstName).IsRequired();
+            builder.Property(t => t.LastName).IsRequired();
+            builder.Property(t => t.Email).IsRequired();
+            builder.Property(t => t.CountryId).IsRequired();
+            builder.Property(t => t.StateProvinceId).IsRequired();
+            builder.Property(t => t.City).IsRequired();
+            builder.Property(t => t.Address).IsRequired();
+            builder.Property(t => t.ZipPostalCode).IsRequired();
+            builder.Property(t => t.PhoneNumber).IsRequired();
+            builder.Property(t => t.Active).IsRequired();
 
             //Table  
-            ToTable("CustomerAddress");
+            builder.ToTable("CustomerAddress");
 
             //Relationship
-            HasRequired(t => t.Customer).WithMany(c => c.Address).HasForeignKey(t => t.CustomerId).WillCascadeOnDelete(false);
-            HasRequired(t => t.Country).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.CountryId).WillCascadeOnDelete(false);
-            HasRequired(t => t.StateProvince).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.StateProvinceId).WillCascadeOnDelete(false);
+            builder.HasOne(t => t.Customer).WithMany(c => c.Address).HasForeignKey(t => t.CustomerId);
+            builder.HasOne(t => t.Country).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.CountryId);
+            builder.HasOne(t => t.StateProvince).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.StateProvinceId);
         }
     }
 }

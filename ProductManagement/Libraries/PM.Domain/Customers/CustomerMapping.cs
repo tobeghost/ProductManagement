@@ -1,30 +1,30 @@
-﻿using PM.Domain.Directory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PM.Domain.Customers
 {
-    public class CustomerMapping : EntityTypeConfiguration<Customer>
+    public class CustomerMapping : IEntityTypeConfiguration<Customer>
     {
         public CustomerMapping()
         {
+        }
+
+        public void Configure(EntityTypeBuilder<Customer> builder)
+        {
             //Key
-            HasKey(t => t.Id);
+            builder.HasKey(t => t.Id);
 
             //Properties  
-            Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.FirstName).IsRequired();
-            Property(t => t.LastName).IsRequired();
-            Property(t => t.Username).IsRequired();
-            Property(t => t.Password).IsRequired();
-            Property(t => t.IsAdministrator).IsRequired();
-            Property(t => t.Active).IsRequired();
+            builder.Property(t => t.Id).UseIdentityColumn();
+            builder.Property(t => t.FirstName).IsRequired();
+            builder.Property(t => t.LastName).IsRequired();
+            builder.Property(t => t.Username).IsRequired();
+            builder.Property(t => t.Password).IsRequired();
+            builder.Property(t => t.IsAdministrator).IsRequired();
+            builder.Property(t => t.Active).IsRequired();
 
             //Table  
-            ToTable("Customers");
+            builder.ToTable("Customers");
         }
     }
 }

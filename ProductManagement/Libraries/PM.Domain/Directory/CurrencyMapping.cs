@@ -1,29 +1,29 @@
-﻿using PM.Domain.Directory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PM.Domain.Directory
 {
-    public class CurrencyMapping : EntityTypeConfiguration<Currency>
+    public class CurrencyMapping : IEntityTypeConfiguration<Currency>
     {
         public CurrencyMapping()
         {
+        }
+
+        public void Configure(EntityTypeBuilder<Currency> builder)
+        {
             //Key
-            HasKey(t => t.Id);
+            builder.HasKey(t => t.Id);
 
             //Properties  
-            Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.Name).IsRequired();
-            Property(t => t.CurrencyCode).IsRequired();
-            Property(t => t.Rate).IsRequired();
-            Property(t => t.NumberDecimal).IsRequired();
-            Property(t => t.Active).IsRequired();
+            builder.Property(t => t.Id).UseIdentityColumn();
+            builder.Property(t => t.Name).IsRequired();
+            builder.Property(t => t.CurrencyCode).IsRequired();
+            builder.Property(t => t.Rate).IsRequired();
+            builder.Property(t => t.NumberDecimal).IsRequired();
+            builder.Property(t => t.Active).IsRequired();
 
             //Table  
-            ToTable("Currencies");
+            builder.ToTable("Currencies");
         }
     }
 }

@@ -1,39 +1,39 @@
-﻿using PM.Domain.Directory;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace PM.Domain.Catalog
 {
-    public class ProductMapping : EntityTypeConfiguration<Product>
+    public class ProductMapping : IEntityTypeConfiguration<Product>
     {
         public ProductMapping()
         {
+        }
+
+        public void Configure(EntityTypeBuilder<Product> builder)
+        {
             //Key
-            HasKey(t => t.Id);
+            builder.HasKey(t => t.Id);
 
             //Properties  
-            Property(t => t.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(t => t.Name).IsRequired();
-            Property(t => t.Sku).IsOptional();
-            Property(t => t.Gtin).IsOptional();
-            Property(t => t.ShortDescription).IsOptional();
-            Property(t => t.FullDescription).IsOptional();
-            Property(t => t.Quantity).IsRequired();
-            Property(t => t.Price).IsRequired();
-            Property(t => t.OldPrice).IsRequired();
-            Property(t => t.CatalogPrice).IsRequired();
-            Property(t => t.CostPrice).IsRequired();
-            Property(t => t.CurrencyId).IsRequired();
-            Property(t => t.Active).IsRequired();
+            builder.Property(t => t.Id).UseIdentityColumn();
+            builder.Property(t => t.Name).IsRequired();
+            builder.Property(t => t.Sku);
+            builder.Property(t => t.Gtin);
+            builder.Property(t => t.ShortDescription);
+            builder.Property(t => t.FullDescription);
+            builder.Property(t => t.Quantity).IsRequired();
+            builder.Property(t => t.Price).IsRequired();
+            builder.Property(t => t.OldPrice).IsRequired();
+            builder.Property(t => t.CatalogPrice).IsRequired();
+            builder.Property(t => t.CostPrice).IsRequired();
+            builder.Property(t => t.CurrencyId).IsRequired();
+            builder.Property(t => t.Active).IsRequired();
 
             //Table  
-            ToTable("Products");
+            builder.ToTable("Products");
 
             //Relationship
-            HasRequired(t => t.Currency).WithMany(c => c.Products).HasForeignKey(t => t.CurrencyId).WillCascadeOnDelete(false);
+            builder.HasOne(t => t.Currency).WithMany(c => c.Products).HasForeignKey(t => t.CurrencyId);
         }
     }
 }

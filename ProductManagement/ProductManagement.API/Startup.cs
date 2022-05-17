@@ -57,10 +57,10 @@ namespace ProductManagement.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //using (var migrationSvcScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    migrationSvcScope.ServiceProvider.GetService<PMDbContext>().Database.Migrate();
-            //}
+            using (var migrationSvcScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                migrationSvcScope.ServiceProvider.GetService<PMDbContext>().Database.Migrate();
+            }
 
             if (env.IsDevelopment())
             {
