@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Libraries\PM.Core\PM.Core.csproj" />
     <ProjectReference Include="..\Libraries\PM.Domain\PM.Domain.csproj" />
     <ProjectReference Include="..\Libraries\PM.Services\PM.Services.csproj" />
   </ItemGroup>

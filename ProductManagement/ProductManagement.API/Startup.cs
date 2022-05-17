@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PM.Core.Caching;
+using PM.Core.Caching.Redis;
 using PM.Domain.Data;
 using PM.Services.Catalog;
 using PM.Services.Customers;
@@ -35,6 +37,10 @@ namespace ProductManagement.API
 
             //All auto mapping is done by the AutoMapper.
             services.AddAutoMapper(typeof(Startup));
+
+            //Implement redis for caching
+            services.AddSingleton<RedisServer>();
+            services.AddSingleton<ICacheService, RedisCacheService>();
 
             //Implement application database context.
             services.AddDbContext<PMDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PMDbConnection")));
