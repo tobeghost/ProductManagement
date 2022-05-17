@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductManagement.API", "Pr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{1CA377EC-C9F9-42EB-8F97-5B1FB466723E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PM.Domain", "Libraries\PM.Domain\PM.Domain.csproj", "{631DCB6D-C26B-46D1-B136-7B7275A5B72E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PM.Domain", "Libraries\PM.Domain\PM.Domain.csproj", "{631DCB6D-C26B-46D1-B136-7B7275A5B72E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PM.Services", "Libraries\PM.Services\PM.Services.csproj", "{8C7124D2-E724-4ABC-8B79-1DCB727F9DA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{631DCB6D-C26B-46D1-B136-7B7275A5B72E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{631DCB6D-C26B-46D1-B136-7B7275A5B72E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{631DCB6D-C26B-46D1-B136-7B7275A5B72E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7124D2-E724-4ABC-8B79-1DCB727F9DA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7124D2-E724-4ABC-8B79-1DCB727F9DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7124D2-E724-4ABC-8B79-1DCB727F9DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7124D2-E724-4ABC-8B79-1DCB727F9DA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{631DCB6D-C26B-46D1-B136-7B7275A5B72E} = {1CA377EC-C9F9-42EB-8F97-5B1FB466723E}
+		{8C7124D2-E724-4ABC-8B79-1DCB727F9DA2} = {1CA377EC-C9F9-42EB-8F97-5B1FB466723E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CEF816C-847E-4EF6-94C8-9EBF731BEF79}
