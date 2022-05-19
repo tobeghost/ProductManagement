@@ -314,7 +314,7 @@ namespace PM.Domain.Migrations
                     b.HasOne("PM.Domain.Directory.Currency", "Currency")
                         .WithMany("Products")
                         .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Currency");
@@ -325,13 +325,13 @@ namespace PM.Domain.Migrations
                     b.HasOne("PM.Domain.Catalog.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("PM.Domain.Catalog.Product", "Product")
                         .WithMany("ProductCategories")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -344,19 +344,19 @@ namespace PM.Domain.Migrations
                     b.HasOne("PM.Domain.Directory.Country", "Country")
                         .WithMany("CustomerAddress")
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("PM.Domain.Customers.Customer", "Customer")
                         .WithMany("Address")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("PM.Domain.Directory.StateProvince", "StateProvince")
                         .WithMany("CustomerAddress")
                         .HasForeignKey("StateProvinceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Country");
@@ -371,7 +371,7 @@ namespace PM.Domain.Migrations
                     b.HasOne("PM.Domain.Directory.Country", "Country")
                         .WithMany("StateProvinces")
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Country");
