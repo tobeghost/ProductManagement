@@ -33,7 +33,7 @@ namespace PM.Domain.Catalog
             builder.ToTable("Products");
 
             //Relationship
-            builder.HasOne(t => t.Currency).WithMany(c => c.Products).HasForeignKey(t => t.CurrencyId);
+            builder.HasOne(t => t.Currency).WithMany(c => c.Products).HasForeignKey(t => t.CurrencyId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

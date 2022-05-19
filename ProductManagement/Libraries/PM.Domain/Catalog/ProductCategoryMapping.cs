@@ -23,8 +23,8 @@ namespace PM.Domain.Catalog
             builder.ToTable("ProductCategories");
 
             //Relationship
-            builder.HasOne(t => t.Category).WithMany(c => c.Products).HasForeignKey(t => t.CategoryId);
-            builder.HasOne(t => t.Product).WithMany(c => c.ProductCategories).HasForeignKey(t => t.ProductId);
+            builder.HasOne(t => t.Category).WithMany(c => c.Products).HasForeignKey(t => t.CategoryId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(t => t.Product).WithMany(c => c.ProductCategories).HasForeignKey(t => t.ProductId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

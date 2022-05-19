@@ -33,9 +33,9 @@ namespace PM.Domain.Customers
             builder.ToTable("CustomerAddress");
 
             //Relationship
-            builder.HasOne(t => t.Customer).WithMany(c => c.Address).HasForeignKey(t => t.CustomerId);
-            builder.HasOne(t => t.Country).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.CountryId);
-            builder.HasOne(t => t.StateProvince).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.StateProvinceId);
+            builder.HasOne(t => t.Customer).WithMany(c => c.Address).HasForeignKey(t => t.CustomerId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(t => t.Country).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.CountryId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(t => t.StateProvince).WithMany(c => c.CustomerAddress).HasForeignKey(t => t.StateProvinceId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

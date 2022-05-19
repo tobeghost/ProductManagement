@@ -24,7 +24,7 @@ namespace PM.Domain.Directory
             builder.ToTable("StateProvinces");
 
             //Relationship
-            builder.HasOne(t => t.Country).WithMany(c => c.StateProvinces).HasForeignKey(t => t.CountryId);
+            builder.HasOne(t => t.Country).WithMany(c => c.StateProvinces).HasForeignKey(t => t.CountryId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
