@@ -14,5 +14,6 @@ namespace PM.Services.Customers
         Task DeleteCustomerById(int customerId);
         Task<IEnumerable<Customer>> GetAllCustomers(bool showHidden = false);
         Task<Customer> GetCustomerById(int customerId);
+        Task<Customer> GetCustomerByUsername(string username);
     }
 }

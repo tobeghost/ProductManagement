@@ -76,7 +76,7 @@ namespace PM.Services.Catalog
             if (productId < 0)
                 throw new ArgumentNullException("productId");
 
-            var entity = await _productRepository.GetByIdAsync(productId);
+            var entity = _productRepository.GetById(productId);
             if (entity == null)
                 throw new Exception("Not found product");
 
@@ -92,11 +92,11 @@ namespace PM.Services.Catalog
         {
             if (showHidden)
             {
-                return await _productRepository.FindAsync(row => row.Active);
+                return _productRepository.Find(row => row.Active);
             }
             else
             {
-                return await _productRepository.GetAllAsync();
+                return _productRepository.GetAll();
             }
         }
 
@@ -110,7 +110,7 @@ namespace PM.Services.Catalog
             if (productId <= 0)
                 return null;
 
-            return await _productRepository.GetByIdAsync(productId);
+            return _productRepository.GetById(productId);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace PM.Services.Customers
             if (customerId < 0)
                 throw new ArgumentNullException("customerId");
 
-            var entity = await _customerRepository.GetByIdAsync(customerId);
+            var entity = _customerRepository.GetById(customerId);
             if (entity == null)
                 throw new Exception("Not found customer");
 
@@ -92,11 +92,11 @@ namespace PM.Services.Customers
         {
             if (showHidden)
             {
-                return await _customerRepository.FindAsync(row => row.Active);
+                return _customerRepository.Find(row => row.Active);
             }
             else
             {
-                return await _customerRepository.GetAllAsync();
+                return _customerRepository.GetAll();
             }
         }
 
@@ -110,7 +110,20 @@ namespace PM.Services.Customers
             if (customerId <= 0)
                 return null;
 
-            return await _customerRepository.GetByIdAsync(customerId);
+            return _customerRepository.GetById(customerId);
+        }
+
+        /// <summary>
+        /// Get customer by username
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <returns>Customer</returns>
+        public virtual async Task<Customer> GetCustomerByUsername(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                return null;
+
+            return _customerRepository.Single(row => row.Username == username);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace PM.Services.Directory
             if (currencyId < 0)
                 throw new ArgumentNullException("currencyId");
 
-            var entity = await _currencyRepository.GetByIdAsync(currencyId);
+            var entity = _currencyRepository.GetById(currencyId);
             if (entity == null)
                 throw new Exception("Not found currency");
 
@@ -92,11 +92,11 @@ namespace PM.Services.Directory
         {
             if (showHidden)
             {
-                return await _currencyRepository.FindAsync(row => row.Active);
+                return _currencyRepository.Find(row => row.Active);
             }
             else
             {
-                return await _currencyRepository.GetAllAsync();
+                return _currencyRepository.GetAll();
             }
         }
 
@@ -110,7 +110,7 @@ namespace PM.Services.Directory
             if (currencyId <= 0)
                 return null;
 
-            return await _currencyRepository.GetByIdAsync(currencyId);
+            return _currencyRepository.GetById(currencyId);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace PM.Services.Directory
         /// <returns>Currency</returns>
         public virtual async Task<Currency> GetCurrencyByCode(string currencyCode)
         {
-            return await _currencyRepository.SingleAsync(i => i.CurrencyCode == currencyCode);
+            return _currencyRepository.Single(i => i.CurrencyCode == currencyCode);
         }
     }
 }

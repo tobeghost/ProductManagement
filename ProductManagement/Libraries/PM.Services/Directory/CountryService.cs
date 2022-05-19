@@ -76,7 +76,7 @@ namespace PM.Services.Directory
             if (countryId < 0)
                 throw new ArgumentNullException("countryId");
 
-            var entity = await _countryRepository.GetByIdAsync(countryId);
+            var entity = _countryRepository.GetById(countryId);
             if (entity == null)
                 throw new Exception("Not found country");
 
@@ -92,11 +92,11 @@ namespace PM.Services.Directory
         {
             if (showHidden)
             {
-                return await _countryRepository.FindAsync(row => row.Active);
+                return _countryRepository.Find(row => row.Active);
             }
             else
             {
-                return await _countryRepository.GetAllAsync();
+                return _countryRepository.GetAll();
             }
         }
 
@@ -110,7 +110,7 @@ namespace PM.Services.Directory
             if (countryId <= 0)
                 return null;
 
-            return await _countryRepository.GetByIdAsync(countryId);
+            return _countryRepository.GetById(countryId);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace PM.Services.Directory
         /// <returns>Country</returns>
         public virtual async Task<Country> GetCountryByTwoLetterIsoCode(string twoLetterIsoCode)
         {
-            return await _countryRepository.SingleAsync(i => i.TwoLetterIsoCode == twoLetterIsoCode);
+            return _countryRepository.Single(i => i.TwoLetterIsoCode == twoLetterIsoCode);
         }
     }
 }

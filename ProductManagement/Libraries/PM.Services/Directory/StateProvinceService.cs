@@ -76,7 +76,7 @@ namespace PM.Services.Directory
             if (stateProvinceId < 0)
                 throw new ArgumentNullException("stateProvinceId");
 
-            var entity = await _stateProvinceRepository.GetByIdAsync(stateProvinceId);
+            var entity = _stateProvinceRepository.GetById(stateProvinceId);
             if (entity == null)
                 throw new Exception("Not found state/province");
 
@@ -92,11 +92,11 @@ namespace PM.Services.Directory
         {
             if (showHidden)
             {
-                return await _stateProvinceRepository.FindAsync(row => row.Active);
+                return _stateProvinceRepository.Find(row => row.Active);
             }
             else
             {
-                return await _stateProvinceRepository.GetAllAsync();
+                return _stateProvinceRepository.GetAll();
             }
         }
 
@@ -110,11 +110,11 @@ namespace PM.Services.Directory
         {
             if (showHidden)
             {
-                return await _stateProvinceRepository.FindAsync(row => row.CountryId == countryId && row.Active);
+                return _stateProvinceRepository.Find(row => row.CountryId == countryId && row.Active);
             }
             else
             {
-                return await _stateProvinceRepository.FindAsync(row => row.CountryId == countryId);
+                return _stateProvinceRepository.Find(row => row.CountryId == countryId);
             }
         }
 
@@ -128,7 +128,7 @@ namespace PM.Services.Directory
             if (stateProvinceId <= 0)
                 return null;
 
-            return await _stateProvinceRepository.GetByIdAsync(stateProvinceId);
+            return _stateProvinceRepository.GetById(stateProvinceId);
         }
     }
 }

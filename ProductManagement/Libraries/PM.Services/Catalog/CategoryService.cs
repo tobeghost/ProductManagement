@@ -76,7 +76,7 @@ namespace PM.Services.Catalog
             if (categoryId < 0)
                 throw new ArgumentNullException("categoryId");
 
-            var entity = await _categoryRepository.GetByIdAsync(categoryId);
+            var entity = _categoryRepository.GetById(categoryId);
             if (entity == null)
                 throw new Exception("Not found category");
 
@@ -92,11 +92,11 @@ namespace PM.Services.Catalog
         {
             if (showHidden)
             {
-                return await _categoryRepository.FindAsync(row => row.Active);
+                return _categoryRepository.Find(row => row.Active);
             }
             else
             {
-                return await _categoryRepository.GetAllAsync();
+                return _categoryRepository.GetAll();
             }
         }
 
@@ -110,7 +110,7 @@ namespace PM.Services.Catalog
             if (categoryId <= 0)
                 return null;
 
-            return await _categoryRepository.GetByIdAsync(categoryId);
+            return _categoryRepository.GetById(categoryId);
         }
     }
 }
