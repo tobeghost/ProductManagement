@@ -39,12 +39,22 @@ namespace PM.Domain.Data
 
         public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Where(expression).ToList();
+            return _context.Set<T>().Where(expression);
         }
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression)
         {
             return await _context.Set<T>().Where(expression).ToListAsync();
+        }
+
+        public T Single(Expression<Func<T, bool>> expression)
+        {
+            return _context.Set<T>().Where(expression).FirstOrDefault();
+        }
+
+        public async Task<T> SingleAsync(Expression<Func<T, bool>> expression)
+        {
+            return await _context.Set<T>().Where(expression).FirstOrDefaultAsync();
         }
 
         public void Add(T entity)

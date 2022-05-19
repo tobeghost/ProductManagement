@@ -23,7 +23,7 @@ namespace PM.Services.Directory
         }
 
         /// <summary>
-        /// 
+        /// Inserts a country
         /// </summary>
         /// <param name="country"></param>
         /// <returns></returns>
@@ -37,7 +37,7 @@ namespace PM.Services.Directory
         }
 
         /// <summary>
-        /// 
+        /// Updates the country
         /// </summary>
         /// <param name="country"></param>
         /// <returns></returns>
@@ -51,7 +51,7 @@ namespace PM.Services.Directory
         }
 
         /// <summary>
-        /// 
+        /// Delete the country
         /// </summary>
         /// <param name="country"></param>
         /// <returns></returns>
@@ -65,9 +65,9 @@ namespace PM.Services.Directory
         }
 
         /// <summary>
-        /// 
+        /// Delete country by id
         /// </summary>
-        /// <param name="countryId"></param>
+        /// <param name="countryId">Country identifier</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="Exception"></exception>
@@ -83,6 +83,11 @@ namespace PM.Services.Directory
             await _countryRepository.RemoveAsync(entity);
         }
 
+        /// <summary>
+        /// Gets all countries
+        /// </summary>
+        /// <param name="showHidden">A value indicating whether to show hidden records</param>
+        /// <returns></returns>
         public virtual async Task<IEnumerable<Country>> GetAllCountries(bool showHidden = false)
         {
             if (showHidden)
@@ -93,6 +98,29 @@ namespace PM.Services.Directory
             {
                 return await _countryRepository.GetAllAsync();
             }
+        }
+
+        /// <summary>
+        /// Gets a country 
+        /// </summary>
+        /// <param name="countryId">Country identifier</param>
+        /// <returns>Country</returns>
+        public virtual async Task<Country> GetCountryById(int countryId)
+        {
+            if (countryId <= 0)
+                return null;
+
+            return await _countryRepository.GetByIdAsync(countryId);
+        }
+
+        /// <summary>
+        /// Gets a country by two letter ISO code
+        /// </summary>
+        /// <param name="twoLetterIsoCode">Country two letter ISO code</param>
+        /// <returns>Country</returns>
+        public virtual async Task<Country> GetCountryByTwoLetterIsoCode(string twoLetterIsoCode)
+        {
+            return await _countryRepository.SingleAsync(i => i.TwoLetterIsoCode == twoLetterIsoCode);
         }
     }
 }
