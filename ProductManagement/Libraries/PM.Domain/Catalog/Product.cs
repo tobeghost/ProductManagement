@@ -10,6 +10,11 @@ namespace PM.Domain.Catalog
     /// </summary>
     public partial class Product : BaseEntity
     {
+        public Product()
+        {
+            ProductCategories = new List<ProductCategory>();
+        }
+
         /// <summary>
         /// Gets or sets the name
         /// </summary>

@@ -145,7 +145,32 @@ namespace PM.Services.Catalog
             if (productId <= 0)
                 return null;
 
-            return _productRepository.GetById(productId);
+            return await _productRepository.Table.Where(row => row.Id == productId)
+                                                 .Include(row => row.ProductCategories)
+                                                 .ThenInclude(row => row.Category)
+                                                 .Include(row => row.Currency)
+                                                 .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Change status of product
+        /// </summary>
+        /// <param name="productId">Product identifier</param>
+        /// <param name="status">Set true for active else passive</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public virtual async Task ChangeStatusOfProductById(int productId, bool status)
+        {
+            if (productId <= 0)
+                throw new ArgumentNullException("productId");
+
+            var product = _productRepository.GetById(productId);
+            if (product == null)
+                throw new ArgumentNullException("product");
+
+            product.Active = status;
+
+            await _productRepository.UpdateAsync(product);
         }
     }
 }

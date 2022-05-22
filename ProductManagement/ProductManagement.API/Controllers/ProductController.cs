@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PM.Domain.Catalog;
 using PM.Services.Catalog;
 using ProductManagement.API.Models;
 using ProductManagement.API.Models.Product;
@@ -25,8 +26,61 @@ namespace ProductManagement.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto createProductDto)
+        {
+            var re = new CreateProductResponse();
+
+            try
+            {
+                var new_product = _mapper.Map<Product>(createProductDto);
+
+                if (createProductDto.Categories != null)
+                {
+                    foreach (var item in createProductDto.Categories)
+                    {
+                        new_product.ProductCategories.Add(new ProductCategory()
+                        {
+                            CategoryId = item
+                        });
+                    }
+                }
+
+                await _productService.InsertProduct(new_product);
+
+                return RedirectToAction("GetProductById", "Product", new { productId = new_product.Id });
+            }
+            catch (Exception ex)
+            {
+                re.Error(ex);
+            }
+
+            return Ok(re);
+        }
+
+        [HttpGet("{productId}/detail")]
+        public async Task<IActionResult> GetProductById(int productId)
+        {
+            var re = new GetProductResponse();
+
+            try
+            {
+                var product = await _productService.GetProductById(productId);
+
+                var data = _mapper.Map<ProductDto>(product);
+
+                re.Success(data);
+            }
+            catch (Exception ex)
+            {
+                re.Error(ex);
+            }
+
+            return Ok(re);
+        }
+
         [HttpGet("all")]
-        public async Task<GetProductsResponse> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts()
         {
             var re = new GetProductsResponse();
 
@@ -43,11 +97,11 @@ namespace ProductManagement.API.Controllers
                 re.Error(ex);
             }
 
-            return re;
+            return Ok(re);
         }
 
-        [HttpGet("{categoryId}")]
-        public async Task<GetProductsResponse> GetProductsByCategoryId(int categoryId)
+        [HttpGet("{categoryId}/all")]
+        public async Task<IActionResult> GetProductsByCategoryId(int categoryId)
         {
             var re = new GetProductsResponse();
 
@@ -64,7 +118,45 @@ namespace ProductManagement.API.Controllers
                 re.Error(ex);
             }
 
-            return re;
+            return Ok(re);
+        }
+
+        [HttpPost("{productId}/active")]
+        public async Task<IActionResult> SetActive(int productId)
+        {
+            var re = new BaseResponse();
+
+            try
+            {
+                await _productService.ChangeStatusOfProductById(productId, true);
+
+                re.Success();
+            }
+            catch (Exception ex)
+            {
+                re.Error(ex);
+            }
+
+            return Ok(re);
+        }
+
+        [HttpPost("{productId}/passive")]
+        public async Task<IActionResult> SetPassive(int productId)
+        {
+            var re = new BaseResponse();
+
+            try
+            {
+                await _productService.ChangeStatusOfProductById(productId, false);
+
+                re.Success();
+            }
+            catch (Exception ex)
+            {
+                re.Error(ex);
+            }
+
+            return Ok(re);
         }
     }
 }

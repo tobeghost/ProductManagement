@@ -18,6 +18,7 @@ using PM.Core.Configuration;
 using PM.Core.Extensions;
 using PM.Domain.Data;
 using PM.Services.Catalog;
+using PM.Services.Converters;
 using PM.Services.Customers;
 using PM.Services.Directory;
 using System;
@@ -53,6 +54,9 @@ namespace ProductManagement.API
 
             //All auto mapping is done by the AutoMapper.
             services.AddAutoMapper(typeof(Startup));
+
+            //Implement converters for auto mapper
+            services.AddScoped<CurrencyConverter>();
 
             //Implement redis for caching
             services.AddSingleton<RedisServer>();

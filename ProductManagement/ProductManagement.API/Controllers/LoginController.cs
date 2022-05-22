@@ -34,23 +34,23 @@ namespace ProductManagement.API.Controllers
         }
 
         [HttpGet("token")]
-        public async Task<TokenResponse> Token(string username, string password)
+        public async Task<IActionResult> Token(string username, string password)
         {
-            var result = new TokenResponse();
+            var re = new TokenResponse();
 
             try
             {
                 var user = await _customerService.GetCustomerByUsername(username);
                 if (user == null)
                 {
-                    result.AddError("User not exists");
-                    return result;
+                    re.AddError("User not exists");
+                    return BadRequest(re);
                 }
 
                 if (user.Password != password)
                 {
-                    result.AddError("Password doesn't match");
-                    return result;
+                    re.AddError("Password doesn't match");
+                    return BadRequest(re);
                 }
 
                 var token = new JwtTokenBuilder();
@@ -70,14 +70,14 @@ namespace ProductManagement.API.Controllers
                 signIn.Token = jwt.Value;
                 signIn.ExpiryInMinutes = _jwtConfig.ExpiryInMinutes;
 
-                result.Success(signIn);
+                re.Success(signIn);
             }
             catch (Exception ex)
             {
-                result.Error(ex);
+                re.Error(ex);
             }
 
-            return result;
+            return Ok(re);
         }
     }
 }

@@ -9,12 +9,17 @@ namespace ProductManagement.API.Models
         public bool Status { get; set; }
         public IEnumerable<string> Errors { get; set; }
 
-        public void AddError(string message)
+        public virtual void AddError(string message)
         {
             if (Errors == null)
                 Errors = new List<string>();
 
             Errors = Errors.Append(message);
+        }
+
+        public virtual void Success()
+        {
+            Status = true;
         }
 
         public virtual void Error(Exception ex)
@@ -28,7 +33,7 @@ namespace ProductManagement.API.Models
     {
         public T Data { get; set; }
 
-        public void Success(T data)
+        public virtual void Success(T data)
         {
             Status = true;
             Data = data;

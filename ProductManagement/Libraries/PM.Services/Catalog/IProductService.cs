@@ -15,5 +15,6 @@ namespace PM.Services.Catalog
         Task<IEnumerable<Product>> GetAllProducts(bool showHidden = false);
         Task<IEnumerable<Product>> GetProductsByCategoryId(int categoryId, bool showHidden = false);
         Task<Product> GetProductById(int productId);
+        Task ChangeStatusOfProductById(int productId, bool status);
     }
 }
