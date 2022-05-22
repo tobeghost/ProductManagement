@@ -21,9 +21,12 @@ using PM.Services.Catalog;
 using PM.Services.Converters;
 using PM.Services.Customers;
 using PM.Services.Directory;
+using ProductManagement.API.Middleware;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +37,11 @@ namespace ProductManagement.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            Log.Logger = new LoggerConfiguration()
+               .ReadFrom.Configuration(configuration)
+               .Enrich.FromLogContext()
+               .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -141,17 +149,21 @@ namespace ProductManagement.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             using (var migrationSvcScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 migrationSvcScope.ServiceProvider.GetService<PMDbContext>().Database.Migrate();
             }
 
+            loggerFactory.AddSerilog();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<RequestResponseLoggerMiddleware>();
 
             //Swagger user interface configuration
             app.UseSwagger();
