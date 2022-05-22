@@ -17,6 +17,8 @@ namespace PM.Domain.Data
             _context = context;
         }
 
+        public IQueryable<T> Table => _context.Set<T>();
+
         public T GetById(int id)
         {
             return _context.Set<T>().Find(id);

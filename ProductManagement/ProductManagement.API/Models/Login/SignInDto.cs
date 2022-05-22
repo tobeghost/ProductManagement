@@ -1,6 +1,6 @@
 ﻿namespace ProductManagement.API.Models.Login
 {
-    public class SignInResponse
+    public class SignInDto
     {
         public string Username { get; set; }
         public string Name { get; set; }

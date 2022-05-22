@@ -13,6 +13,7 @@ namespace PM.Services.Catalog
         Task DeleteProduct(Product product);
         Task DeleteProductById(int productId);
         Task<IEnumerable<Product>> GetAllProducts(bool showHidden = false);
+        Task<IEnumerable<Product>> GetProductsByCategoryId(int categoryId, bool showHidden = false);
         Task<Product> GetProductById(int productId);
     }
 }

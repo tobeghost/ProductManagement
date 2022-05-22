@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PM.Core.Configuration;
 using PM.Core.Extensions;
@@ -6,6 +7,7 @@ using PM.Services.Customers;
 using ProductManagement.API.Jwt;
 using ProductManagement.API.Models;
 using ProductManagement.API.Models.Login;
+using ProductManagement.API.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,20 +20,23 @@ namespace ProductManagement.API.Controllers
     {
         private readonly JwtAuthenticationConfig _jwtConfig;
         private readonly ICustomerService _customerService;
+        private readonly IMapper _mapper;
 
         public LoginController(
             JwtAuthenticationConfig jwtConfig,
-            ICustomerService customerService
+            ICustomerService customerService,
+            IMapper mapper
         )
         {
             _jwtConfig = jwtConfig;
             _customerService = customerService;
+            _mapper = mapper;
         }
 
         [HttpGet("token")]
-        public async Task<BaseResponse<SignInResponse>> Token(string username, string password)
+        public async Task<TokenResponse> Token(string username, string password)
         {
-            var result = new BaseResponse<SignInResponse>();
+            var result = new TokenResponse();
 
             try
             {
@@ -61,9 +66,7 @@ namespace ProductManagement.API.Controllers
 
                 var jwt = token.Build();
 
-                var signIn = new SignInResponse();
-                signIn.Username = username;
-                signIn.Name = $"{user.FirstName} {user.LastName}";
+                var signIn = _mapper.Map<SignInDto>(user);
                 signIn.Token = jwt.Value;
                 signIn.ExpiryInMinutes = _jwtConfig.ExpiryInMinutes;
 
