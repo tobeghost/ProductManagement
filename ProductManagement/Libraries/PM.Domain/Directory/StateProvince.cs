@@ -1,4 +1,5 @@
-﻿using PM.Domain.Customers;
+﻿using Newtonsoft.Json;
+using PM.Domain.Customers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ namespace PM.Domain.Directory
     /// <summary>
     /// Represents a state province
     /// </summary>
+    [JsonObject(IsReference = true)]
     public partial class StateProvince : BaseEntity
     {
         /// <summary>

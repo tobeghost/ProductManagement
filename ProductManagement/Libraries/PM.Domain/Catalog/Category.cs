@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace PM.Domain.Catalog
     /// <summary>
     /// Represents a category
     /// </summary>
+    [JsonObject(IsReference = true)]
     public partial class Category : BaseEntity
     {
         /// <summary>

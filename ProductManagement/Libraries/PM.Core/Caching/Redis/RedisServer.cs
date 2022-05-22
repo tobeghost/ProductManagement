@@ -10,6 +10,7 @@ namespace PM.Core.Caching.Redis
     {
         private ConnectionMultiplexer _connectionMultiplexer;
         private IDatabase _database;
+        private IServer _server;
         private readonly string _configurationString;
         private int _currentDatabaseId = 0;
 
@@ -22,9 +23,11 @@ namespace PM.Core.Caching.Redis
 
             _connectionMultiplexer = ConnectionMultiplexer.Connect(_configurationString);
             _database = _connectionMultiplexer.GetDatabase();
+            _server = _connectionMultiplexer.GetServer(_configurationString);
         }
 
         public IDatabase Database => _database;
+        public IServer Server => _server;
 
         public void FlushDatabase()
         {

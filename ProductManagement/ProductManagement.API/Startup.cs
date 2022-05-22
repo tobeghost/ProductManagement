@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -53,6 +54,7 @@ namespace ProductManagement.API
 
             services.AddMvc().AddNewtonsoftJson(options =>
             {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver()
                 {
@@ -62,6 +64,9 @@ namespace ProductManagement.API
 
             //All auto mapping is done by the AutoMapper.
             services.AddAutoMapper(typeof(Startup));
+
+            //Implement mediator
+            services.AddMediatR(typeof(Startup));
 
             //Implement converters for auto mapper
             services.AddScoped<CurrencyConverter>();

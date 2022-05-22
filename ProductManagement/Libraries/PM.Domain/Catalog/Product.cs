@@ -1,4 +1,5 @@
-﻿using PM.Domain.Directory;
+﻿using Newtonsoft.Json;
+using PM.Domain.Directory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ namespace PM.Domain.Catalog
     /// <summary>
     /// Represents a product
     /// </summary>
+    [JsonObject(IsReference = true)]
     public partial class Product : BaseEntity
     {
         public Product()

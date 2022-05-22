@@ -15,6 +15,10 @@ namespace PM.Services.Catalog
     /// </summary>
     public partial class ProductService : IProductService
     {
+        private const string CACHEKEY_ALLPRODUCTS = "PM.Services.Product.all-{0}";
+        private const string CACHEKEY_ALLPRODUCTS_BY_CATEGORYID = "PM.Services.Product.category-{0}-{1}";
+        private const string CACHEKEY_ALLPRODUCTS_BY_ID = "PM.Services.Product.id-{0}";
+
         private readonly ICacheService _cache;
         private readonly IRepository<Product> _productRepository;
 
@@ -92,21 +96,25 @@ namespace PM.Services.Catalog
         /// <returns></returns>
         public virtual async Task<IEnumerable<Product>> GetAllProducts(bool showHidden = false)
         {
-            if (showHidden)
+            var key = string.Format(CACHEKEY_ALLPRODUCTS, showHidden);
+            return await _cache.GetOrCreate(key, async () =>
             {
-                return await _productRepository.Table.Where(row => row.Active)
-                                                     .Include(row => row.ProductCategories)
-                                                     .ThenInclude(row => row.Category)
-                                                     .Include(row => row.Currency)
-                                                     .ToListAsync();
-            }
-            else
-            {
-                return await _productRepository.Table.Include(row => row.ProductCategories)
-                                                     .ThenInclude(row => row.Category)
-                                                     .Include(row => row.Currency)
-                                                     .ToListAsync();
-            }
+                if (showHidden)
+                {
+                    return await _productRepository.Table.Where(row => row.Active)
+                                                         .Include(row => row.ProductCategories)
+                                                         .ThenInclude(row => row.Category)
+                                                         .Include(row => row.Currency)
+                                                         .ToListAsync();
+                }
+                else
+                {
+                    return await _productRepository.Table.Include(row => row.ProductCategories)
+                                                         .ThenInclude(row => row.Category)
+                                                         .Include(row => row.Currency)
+                                                         .ToListAsync();
+                }
+            });
         }
 
         /// <summary>
@@ -117,22 +125,26 @@ namespace PM.Services.Catalog
         /// <returns></returns>
         public virtual async Task<IEnumerable<Product>> GetProductsByCategoryId(int categoryId, bool showHidden = false)
         {
-            if (showHidden)
+            var key = string.Format(CACHEKEY_ALLPRODUCTS_BY_CATEGORYID, categoryId, showHidden);
+            return await _cache.GetOrCreate(key, async () =>
             {
-                return await _productRepository.Table.Where(row => row.ProductCategories.Any(o => o.CategoryId == categoryId) && row.Active)
-                                                     .Include(row => row.ProductCategories)
-                                                     .ThenInclude(row => row.Category)
-                                                     .Include(row => row.Currency)
-                                                     .ToListAsync();
-            }
-            else
-            {
-                return await _productRepository.Table.Where(row => row.ProductCategories.Any(o => o.CategoryId == categoryId))
-                                                     .Include(row => row.ProductCategories)
-                                                     .ThenInclude(row => row.Category)
-                                                     .Include(row => row.Currency)
-                                                     .ToListAsync();
-            }
+                if (showHidden)
+                {
+                    return await _productRepository.Table.Where(row => row.ProductCategories.Any(o => o.CategoryId == categoryId) && row.Active)
+                                                         .Include(row => row.ProductCategories)
+                                                         .ThenInclude(row => row.Category)
+                                                         .Include(row => row.Currency)
+                                                         .ToListAsync();
+                }
+                else
+                {
+                    return await _productRepository.Table.Where(row => row.ProductCategories.Any(o => o.CategoryId == categoryId))
+                                                         .Include(row => row.ProductCategories)
+                                                         .ThenInclude(row => row.Category)
+                                                         .Include(row => row.Currency)
+                                                         .ToListAsync();
+                }
+            });
         }
 
         /// <summary>
@@ -145,11 +157,15 @@ namespace PM.Services.Catalog
             if (productId <= 0)
                 return null;
 
-            return await _productRepository.Table.Where(row => row.Id == productId)
+            var key = string.Format(CACHEKEY_ALLPRODUCTS_BY_ID, productId);
+            return await _cache.GetOrCreate(key, async () =>
+            {
+                return await _productRepository.Table.Where(row => row.Id == productId)
                                                  .Include(row => row.ProductCategories)
                                                  .ThenInclude(row => row.Category)
                                                  .Include(row => row.Currency)
                                                  .FirstOrDefaultAsync();
+            });
         }
 
         /// <summary>

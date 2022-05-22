@@ -1,4 +1,5 @@
-﻿using PM.Domain.Catalog;
+﻿using Newtonsoft.Json;
+using PM.Domain.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,7 @@ namespace PM.Domain.Directory
     /// <summary>
     /// Represents a currency
     /// </summary>
+    [JsonObject(IsReference = true)]
     public partial class Currency : BaseEntity
     {
         /// <summary>

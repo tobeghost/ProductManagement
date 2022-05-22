@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PM.Domain.Catalog;
 using PM.Services.Catalog;
+using ProductManagement.API.Commands;
 using ProductManagement.API.Models;
 using ProductManagement.API.Models.Product;
 using ProductManagement.API.Models.Responses;
@@ -21,11 +23,13 @@ namespace ProductManagement.API.Controllers
     {
         private readonly IProductService _productService;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(IProductService productService, IMapper mapper, IMediator mediator)
         {
             _productService = productService;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         [HttpPost("create")]
@@ -49,6 +53,9 @@ namespace ProductManagement.API.Controllers
                 }
 
                 await _productService.InsertProduct(new_product);
+
+                //Notify for remove cache for products
+                await _mediator.Publish(new RemoveProductCacheCommand());
 
                 return RedirectToAction("GetProductById", "Product", new { productId = new_product.Id });
             }
@@ -132,6 +139,9 @@ namespace ProductManagement.API.Controllers
             {
                 await _productService.ChangeStatusOfProductById(productId, true);
 
+                //Notify for remove cache for products
+                await _mediator.Publish(new RemoveProductCacheCommand());
+
                 re.Success();
             }
             catch (Exception ex)
@@ -150,6 +160,9 @@ namespace ProductManagement.API.Controllers
             try
             {
                 await _productService.ChangeStatusOfProductById(productId, false);
+
+                //Notify for remove cache for products
+                await _mediator.Publish(new RemoveProductCacheCommand());
 
                 re.Success();
             }
