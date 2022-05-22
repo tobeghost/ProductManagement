@@ -13,9 +13,8 @@ A single service api for product management
 - Serilog for logging in MSSQL
 
 # Visual Studio
-- Simply open the solution file <code>ProductManagement.sln</code> 
-  > and wait for project restore. 
-  > then build/run.
+- Simply open the solution file <code>ProductManagement.sln</code> and wait for project restore. 
+- then build/run.
  
 # Migration
 - Run migration to gain access to the seeded data
