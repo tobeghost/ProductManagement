@@ -19,6 +19,7 @@
     <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.7.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.18.0" />
   </ItemGroup>
 
   <ItemGroup>

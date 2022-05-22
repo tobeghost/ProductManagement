@@ -56,13 +56,9 @@ namespace ProductManagement.API.Controllers
                 var token = new JwtTokenBuilder();
                 token.AddSecurityKey(JwtSecurityKey.Create(_jwtConfig.SecretKey));
                 token.AddExpiry(_jwtConfig.ExpiryInMinutes);
-
-                if (_jwtConfig.ValidateIssuer) token.AddIssuer(_jwtConfig.ValidIssuer);
-                if (_jwtConfig.ValidateAudience) token.AddAudience(_jwtConfig.ValidAudience);
-
-                var claims = new Dictionary<string, string>();
-                claims.Add("Username", username);
-                token.AddClaims(claims);
+                token.AddClaim("Username", username);
+                token.AddIssuer(_jwtConfig.ValidIssuer);
+                token.AddAudience(_jwtConfig.ValidAudience);
 
                 var jwt = token.Build();
 

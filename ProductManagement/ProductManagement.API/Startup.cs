@@ -18,6 +18,7 @@ using PM.Core.Caching.Redis;
 using PM.Core.Configuration;
 using PM.Core.Extensions;
 using PM.Domain.Data;
+using PM.Services.Authentication;
 using PM.Services.Catalog;
 using PM.Services.Converters;
 using PM.Services.Customers;
@@ -82,6 +83,7 @@ namespace ProductManagement.API
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             //Implement services.
+            services.AddScoped<IApiAuthenticationService, ApiAuthenticationService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICustomerService, CustomerService>();
@@ -107,6 +109,7 @@ namespace ProductManagement.API
                 var config = new JwtAuthenticationConfig();
                 Configuration.GetSection("JwtAuthentication").Bind(config);
 
+                o.RequireHttpsMetadata = false;
                 o.SaveToken = true;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -116,7 +119,35 @@ namespace ProductManagement.API
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = config.ValidIssuer,
                     ValidAudience = config.ValidAudience,
-                    IssuerSigningKey = JwtSecurityKey.Create(config.SecretKey)
+                    IssuerSigningKey = JwtSecurityKey.Create(config.SecretKey),
+                };
+
+                o.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = async context =>
+                    {
+                        try
+                        {
+                            var apiAuthenticationService = context.HttpContext.RequestServices.GetRequiredService<IApiAuthenticationService>();
+                            if (await apiAuthenticationService.Valid(context))
+                                await apiAuthenticationService.SignIn();
+                            else
+                                throw new Exception(await apiAuthenticationService.ErrorMessage());
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(ex.Message);
+                        }
+                    },
+
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -126,7 +157,7 @@ namespace ProductManagement.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Product Management", Version = "v1" });
 
                 // To Enable authorization using Swagger (JWT)  
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -144,7 +175,7 @@ namespace ProductManagement.API
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Id = JwtBearerDefaults.AuthenticationScheme
                             }
                         },
                         new string[] {}
@@ -182,11 +213,11 @@ namespace ProductManagement.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

@@ -10,24 +10,10 @@ namespace ProductManagement.API.Jwt
     public sealed class JwtTokenBuilder
     {
         private SecurityKey securityKey = null;
-        private bool useissuer;
         private string issuer = "";
-        private bool useaudience;
         private string audience = "";
         private Dictionary<string, string> claims = new Dictionary<string, string>();
         private int expiryInMinutes = 5;
-
-        private void EnsureArguments()
-        {
-            if (this.securityKey == null)
-                throw new ArgumentNullException("Security Key");
-
-            if (this.useissuer && string.IsNullOrEmpty(this.issuer))
-                throw new ArgumentNullException("Issuer");
-
-            if (this.useaudience && string.IsNullOrEmpty(this.audience))
-                throw new ArgumentNullException("Audience");
-        }
 
         public JwtTokenBuilder AddSecurityKey(SecurityKey securityKey)
         {
@@ -38,14 +24,12 @@ namespace ProductManagement.API.Jwt
         public JwtTokenBuilder AddIssuer(string issuer)
         {
             this.issuer = issuer;
-            this.useissuer = true;
             return this;
         }
 
         public JwtTokenBuilder AddAudience(string audience)
         {
             this.audience = audience;
-            this.useaudience = true;
             return this;
         }
 
@@ -75,8 +59,6 @@ namespace ProductManagement.API.Jwt
 
         public JwtToken Build()
         {
-            EnsureArguments();
-
             var claims = new List<Claim>
             {
               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
