@@ -6,7 +6,7 @@ A single service api for product management
   > https://dotnet.microsoft.com/download
 
 # Configuration
-- You should configure <code>appsettings.json</code> for MSSQL;
+- You should configure <code>appsettings.json</code> for your credential;
 - PMDbConnection for MSSQL Connection string
 - JwtAuthentication->SecretKey for your JWT Secret key
 - RedisConfiguration for caching on redis server
