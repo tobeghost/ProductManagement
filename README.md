@@ -6,11 +6,11 @@ A single service api for product management
   > https://dotnet.microsoft.com/download
 
 # Configuration
-- You should configure <code>appsettings.json</code> for your configuration;
-  > PMDbConnection for MSSQL Connection string
-  > JwtAuthentication->SecretKey for your JWT Secret key
-  > RedisConfiguration for caching on redis server
-  > Serilog for logging in MSSQL
+- You should configure <code>appsettings.json</code> for MSSQL;
+- PMDbConnection for MSSQL Connection string
+- JwtAuthentication->SecretKey for your JWT Secret key
+- RedisConfiguration for caching on redis server
+- Serilog for logging in MSSQL
 
 # Visual Studio
 - Simply open the solution file <code>ProductManagement.sln</code> 
